@@ -124,6 +124,7 @@ def update_hangman():
         l5 += "/"
     elif wrong == 6:
         l5 += " \\"
+        hangman()
         print "\nYou lost..."
 
 #Game Loop
