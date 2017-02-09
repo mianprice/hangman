@@ -1,5 +1,4 @@
 #Import list of random words
-
 import urllib2, random
 
 word_site = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
@@ -8,7 +7,7 @@ response = urllib2.urlopen(word_site)
 txt = response.read()
 WORDS = txt.splitlines()
 
-#Setup
+#Setup Variables and Initial Values
 def reset():
     global safe_letters,wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
     safe_letters = list("abcdefghijklmnopqrstuvwxyz")
@@ -33,7 +32,7 @@ def reset():
     l10 = "|"*20
     l11 = "="*20
 
-#Function that draws gallows
+#Function that draws gallows, current solution state, and current guesses state
 def hangman():
     global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
     solution,guesses,solution_print,guesses_print = [""]*4
@@ -63,7 +62,7 @@ def hangman():
     print "\n"
 
 
-#Guess
+#Guess handling function: RECURSIVE
 def guess():
     global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
     hangman()
@@ -98,7 +97,7 @@ def guess():
             guessed_array.append(n)
             update(n)
 
-#Update
+#Update after receiving valid guess
 def update(n):
     global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
     if n in word_array:
@@ -109,6 +108,7 @@ def update(n):
         wrong += 1
         update_hangman()
 
+#Update gallows illustratrion after completed guess
 def update_hangman():
     global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
     if wrong == 1:
