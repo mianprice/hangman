@@ -3,7 +3,7 @@
 Hangman in the command line
   Python
 
-Pulls list of words from online resource
+Pulled list of words from online resource, accesses them each time from text file
 
 Sets up basic gallows illustration and variable declarations
 

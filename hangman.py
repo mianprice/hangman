@@ -1,16 +1,13 @@
 #Import list of random words
-import urllib2, random
+import random
 
-word_site = "http://svnweb.freebsd.org/csrg/share/dict/words?view=co&content-type=text/plain"
-
-response = urllib2.urlopen(word_site)
-txt = response.read()
-WORDS = txt.splitlines()
+WORDS = open('./words.txt').read().splitlines()
+SAFE_LETTERS = list("abcdefghijklmnopqrstuvwxyz")
+GAME_COUNT = 0
 
 #Setup Variables and Initial Values
 def reset():
-    global safe_letters,wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
-    safe_letters = list("abcdefghijklmnopqrstuvwxyz")
+    global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
     ee = False
     e = ""
     wrong = 0
@@ -34,7 +31,7 @@ def reset():
 
 #Function that draws gallows, current solution state, and current guesses state
 def hangman():
-    global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
+    global solution,guesses
     solution,guesses,solution_print,guesses_print = [""]*4
     for i in range(20):
         print "\n"
@@ -64,7 +61,7 @@ def hangman():
 
 #Guess handling function: RECURSIVE
 def guess():
-    global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
+    global e,ee
     hangman()
     if solution == word:
         if wrong < 5:
@@ -87,7 +84,7 @@ def guess():
             ee = True
             e = "You already guessed that. Try again."
             guess()
-        elif n not in safe_letters:
+        elif n not in SAFE_LETTERS:
             ee = True
             e = "The character you entered wasn't a letter. Try again."
             guess()
@@ -99,7 +96,7 @@ def guess():
 
 #Update after receiving valid guess
 def update(n):
-    global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
+    global wrong,word_array,solution_array
     if n in word_array:
         for x in range(word_array.count(n)):
             solution_array[word_array.index(n)] = n
@@ -110,14 +107,13 @@ def update(n):
 
 #Update gallows illustratrion after completed guess
 def update_hangman():
-    global wrong,word,word_array,solution,solution_array,guesses,guessed_array,l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,l11,e,ee
+    global l3,l4,l5
     if wrong == 1:
         l3 += "0"
     elif wrong == 2:
         l4 += "/"
     elif wrong == 3:
-        l4 = "|       "
-        l4 += "/|"
+        l4 += "|"
     elif wrong == 4:
         l4 += "\\"
     elif wrong == 5:
@@ -128,14 +124,12 @@ def update_hangman():
         print "\nYou lost..."
 
 #Game Loop
-while True:
-    t = str(raw_input("Do you want to play hangman? (y/n) "))
-    while t == "y":
-        reset()
-        while wrong < 6:
-            guess()
-            if solution == word:
-                break
-        print "The word was: " + word
-        t = str(raw_input("Do you want to play again? (y/n) "))
-    break
+t = str(raw_input("Do you want to play hangman? (y/n) "))
+while t == "y":
+    reset()
+    while wrong < 6:
+        guess()
+        if solution == word:
+            break
+    print "The word was: " + word
+    t = str(raw_input("Do you want to play again? (y/n) "))
