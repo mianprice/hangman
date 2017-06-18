@@ -3,7 +3,7 @@
 Hangman in the command line
   Python
 
-Pulled list of words from (https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt)
+Pulled list of words from https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-no-swears.txt
 
 Sets up basic gallows illustration and variable declarations
 
